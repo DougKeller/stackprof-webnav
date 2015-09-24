@@ -39,7 +39,7 @@ module StackProf
       def listing_dumps
         require 'pathname'
         root_pathname = Pathname(Server.report_dump_listing)
-        Dir.glob(File.join(root_pathname.to_s, "*.dump")).map do |fpath|
+        Dir.glob(File.join(root_pathname.to_s, "**", "*.dump")).map do |fpath|
           {
             path: fpath,
             name: Pathname(fpath).relative_path_from(root_pathname).to_s,
