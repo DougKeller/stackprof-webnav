@@ -21,16 +21,14 @@ $ gem install stackprof-webnav
 
 ### Pass a dump/URI to it
 ```bash
-$ stackprof-webnav -f /path/to/stackprof.dump
-$ stackprof-webnav -u http://path/to/stackprof.dump
-$ stackprof-webnav -b http://amazon/s3/bucketlisting.xml
+$ stackprof-webnav -d /path/to/directory-with-dump-files
 ```
 
 See [stackprof gem][create-dump] homepage to learn how to create dumps.
 See [amazon s3 API docs][list-bucket-contents] to see the URI format for S3 bucket listings.
 
 ### Profit
-Open the browser at localhost:9292. If you've used the -f or -u form, you can navigate the dump. If you've used the -b form, you'll see a listing of the keys in the bucket -- click on one that is a dump to browse through it.
+Open the browser at localhost:9292. you'll see a listing of the dumps in the directory -- click on one that is a dump to browse through it.
 
 ## Caveats
 - no tests, this gem was created for my personal usage in a hack stream,

@@ -37,22 +37,15 @@ module StackProf
       end
 
       def listing_dumps
-        Server.report_dump_listing += "/" unless Server.report_dump_listing.end_with?("/") 
-        xml_data = Net::HTTP.get(URI.parse(Server.report_dump_listing))
-        if xml_data
-          doc = REXML::Document.new(xml_data)
-          dumps = []
-          doc.elements.each('ListBucketResult/Contents') do |ele|
-            dumps << {
-              :key => ele.elements["Key"].text, 
-              :date => ele.elements["LastModified"].text,
-              :size => number_with_delimiter(ele.elements["Size"].text.to_i),
-              :uri => Server.report_dump_listing + ele.elements["Key"].text
-            }
-          end
-        end
-        dumps.sort_by! { |hash| hash[:date] }
-        dumps.reverse!
+        require 'pathname'
+        root_pathname = Pathname(Server.report_dump_listing)
+        Dir.glob(File.join(root_pathname.to_s, "*.dump")).map do |fpath|
+          {
+            path: fpath,
+            name: Pathname(fpath).relative_path_from(root_pathname).to_s,
+            date: File.mtime(fpath),
+          }
+        end.sort_by { |hash| hash[:date] }.reverse
       end
 
       def method_info name

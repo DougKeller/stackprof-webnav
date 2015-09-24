@@ -2,22 +2,18 @@
 %hr
 
 %p
-  Viewing S3 bucket at 
+  Listing dumps at
   %b= @file
 
 %table.centered                     
   %thead                            
-    %th Key                     
-    %th Date                           
-    %th Size
     %th Dump
+    %th Date                           
                                    
   %tbody
     - @dumps.each do |dump|                       
       %tr                                           
-        %td= dump[:key]                          
-        %td= dump[:date]                      
-        %td= dump[:size]
         %td                                         
-          %a{:href => overview_url(dump[:uri])}   
-            = dump[:uri]                        
+          %a{:href => overview_url(dump[:path])}   
+            = dump[:name]                        
+        %td= dump[:date]                      

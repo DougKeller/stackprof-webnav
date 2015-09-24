@@ -13,12 +13,8 @@ module StackProf
         def presenter regenerate=false
           return @presenter unless regenerate || @presenter.nil?
           process_options
-          if self.report_dump_path || self.report_dump_uri
-            report_contents = if report_dump_path.nil?
-                                Net::HTTP.get(URI.parse(report_dump_uri))
-                              else
-                                File.open(report_dump_path).read
-                              end
+          if self.report_dump_path
+            report_contents = File.open(report_dump_path).read
             report = StackProf::Report.new(Marshal.load(report_contents))
           end
           @presenter = Presenter.new(report)
@@ -26,12 +22,8 @@ module StackProf
 
         private
         def process_options
-          if cmd_options[:filepath]
-            self.report_dump_path = cmd_options[:filepath]
-          elsif cmd_options[:uri]
-            self.report_dump_uri = cmd_options[:uri]
-          elsif cmd_options[:bucket]
-            self.report_dump_listing = cmd_options[:bucket]
+          if cmd_options[:root]
+            self.report_dump_listing = cmd_options[:root]
           end
         end
 
@@ -75,19 +67,19 @@ module StackProf
 
       get '/overview' do
         if params[:path]
-          Server.report_dump_uri = params[:path]
+          Server.report_dump_path = params[:path]
           Server.presenter(true)
         end
-        @file = Server.report_dump_path || Server.report_dump_uri
+        @file = Server.report_dump_path
         @action = "overview"
         @frames = presenter.overview_frames
         render_with_layout :overview
       end
 
       get '/listing' do
+        @dumps = presenter.listing_dumps
         @file = Server.report_dump_listing
         @action = "listing"
-        @dumps = presenter.listing_dumps
         render_with_layout :listing
       end
 

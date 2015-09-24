@@ -9,15 +9,13 @@ options = {
 }
 
 parser = OptionParser.new(ARGV) do |o|
-  o.banner = "Usage: stackprof-webnav [-f localfile.dump]|[-u http://path/to/file.dump]|[-b http://path/to/s3/bucket/listing] [-p NUMBER]"
-  o.on('-f [LOCALFILE]', 'Local file path to dump') {|filepath| options[:filepath] = filepath }
-  o.on('-u [URI]', 'URI path to dump') {|uri| options[:uri] = uri }
-  o.on('-b [URI]', 'URI path to Amazon S3 bucket listing') {|bucket| options[:bucket] = bucket}
+  o.banner = "Usage: stackprof-webnav [-d rootdir] [-p NUMBER]"
+  o.on('-d [DIRECTORY]', 'Root directory') {|filepath| options[:root] = File.expand_path(filepath) }
   o.on('-p [PORT]', 'Server port') {|port| options[:port] = port }
 end
 
 parser.parse!
-parser.abort(parser.help) unless [:filepath, :uri, :bucket].any? {|key| options.key?(key)}
+parser.abort(parser.help) unless [:root].any? {|key| options.key?(key)}
 
 server = StackProf::Webnav::Server
 server.cmd_options = options
