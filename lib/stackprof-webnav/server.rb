@@ -44,6 +44,7 @@ module StackProf
 
         def render_with_layout *args
           args[0] = template_path("views/#{args[0]}.haml")
+          args[2] = (args[2] || {}).merge(escape_html: true)
           render(template_path('views/layout.haml')) { render(*args) }
         end
 
