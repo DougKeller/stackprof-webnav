@@ -5,14 +5,15 @@
   Listing dumps at
   %b= @file
 
-%table.centered                     
-  %thead                            
-    %th Dump
-    %th Date                           
-                                   
+%table#listing.centered.table.table-condensed.table-hover.table-striped
+  %thead
+    %th{"data-column-id" => "path"} Path
+    %th{"data-column-id" => "id"} Dump
+    %th{"data-column-id" => "date", "data-order" => "desc"} Date                           
   %tbody
     - @dumps.each do |dump|                       
       %tr                                           
+        %td= dump[:path]                      
         %td                                         
           %a{:href => overview_url(dump[:path])}   
             = dump[:name]                        
