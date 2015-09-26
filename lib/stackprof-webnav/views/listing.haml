@@ -13,7 +13,7 @@
   %tbody
     - @dumps.each do |dump|                       
       %tr                                           
-        %td= dump[:path]                      
+        %td= dump[:url]                      
         %td                                         
           %a{:href => overview_url(dump[:path])}   
             = dump[:name]                        

@@ -43,7 +43,7 @@ module StackProf
           {
             path: fpath,
             name: Pathname(fpath).relative_path_from(root_pathname).to_s,
-            path: File.dirname(Pathname(fpath).relative_path_from(root_pathname).to_s),
+            url: File.dirname(Pathname(fpath).relative_path_from(root_pathname).to_s),
             date: File.mtime(fpath),
           }
         end.sort_by { |hash| hash[:date] }.reverse
