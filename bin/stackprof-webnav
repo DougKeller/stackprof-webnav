@@ -5,13 +5,15 @@ require 'sprockets'
 require 'rack'
 
 options = {
-  :port => 9292
+  :port => 9292,
+  :host => 'localhost'
 }
 
 parser = OptionParser.new(ARGV) do |o|
-  o.banner = "Usage: stackprof-webnav [-d rootdir] [-p NUMBER]"
+  o.banner = "Usage: stackprof-webnav [-d rootdir] [-p NUMBER] [-h HOST]"
   o.on('-d [DIRECTORY]', 'Root directory') {|filepath| options[:root] = File.expand_path(filepath) }
   o.on('-p [PORT]', 'Server port') {|port| options[:port] = port }
+  o.on('-h [HOST]', 'Server host') {|host| options[:host] = host }
 end
 
 parser.parse!
@@ -34,4 +36,4 @@ end
 
 puts File.expand_path("../lib/stackprof-webnav/css", __FILE__)
 
-Rack::Handler.get('webrick').run builder, :Port => options[:port]
+Rack::Handler.get('webrick').run builder, :Port => options[:port], :Host => options[:host]
