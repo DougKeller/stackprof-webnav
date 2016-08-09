@@ -5,8 +5,9 @@ require 'sprockets'
 require 'rack'
 
 options = {
+  :root => File.expand_path('tmp/stackprof'),
   :port => 9292,
-  :host => 'localhost'
+  :host => '0.0.0.0'
 }
 
 parser = OptionParser.new(ARGV) do |o|
